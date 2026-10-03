@@ -217,11 +217,26 @@
   document.getElementById('contactModalClose').addEventListener('click', function () {
     closeModal(contactModal);
   });
-  document.getElementById('contactForm').addEventListener('submit', function (e) {
+  // Cloudflare Worker that emails the message (source: contact-worker/)
+  var FORM_ENDPOINT = 'https://contact-form.isaac-hartman.workers.dev';
+  var contactForm = document.getElementById('contactForm');
+  var formNote = document.getElementById('formNote');
+  var sendBtn = contactForm.querySelector('button[type="submit"]');
+  contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    // Placeholder: wire this up to your form backend of choice
-    // (Formspree, Netlify Forms, a serverless function, etc).
-    document.getElementById('formNote').textContent = 'This is a scaffold — connect a form backend to actually send this.';
+    sendBtn.disabled = true;
+    formNote.textContent = 'Sending…';
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(contactForm)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('bad response');
+      contactForm.reset();
+      formNote.textContent = 'Thanks — your message was sent.';
+    }).catch(function () {
+      formNote.textContent = 'Something went wrong. Please try again.';
+    }).then(function () { sendBtn.disabled = false; });
   });
 
   /* -----------------------------------------------------

@@ -687,6 +687,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   transition: border-color 0.25s var(--ease);
 }
 .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--ink); }
+.hp { position: absolute; left: -9999px; }
 .form-note { margin-top: 14px; font-size: 13px; color: var(--muted); min-height: 1.2em; }
 
 .modal-project { max-width: 920px; padding: 0; }
