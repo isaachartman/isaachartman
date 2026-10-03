@@ -1,6 +1,10 @@
 import { EmailMessage } from 'cloudflare:email';
 
-const ALLOWED_ORIGINS = ['https://isaachartman.com', 'https://www.isaachartman.com'];
+const ALLOWED_ORIGINS = [
+  'https://isaachartman.com',
+  'https://www.isaachartman.com',
+  'https://portfolio-dev.isaac-hartman.workers.dev', // preview of the dev branch
+];
 const FROM = 'contact@isaachartman.com';
 const TO = 'isaac.hartman@gmail.com';
 
