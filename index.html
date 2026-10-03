@@ -245,8 +245,8 @@ footer {
   <script>
 document.getElementById('y').textContent = new Date().getFullYear();
 
-  // Set this to your form endpoint (e.g. a Formspree URL: https://formspree.io/f/xxxxxxxx)
-  var FORM_ENDPOINT = 'https://formspree.io/f/xdekqjqq';
+  // Cloudflare Worker that emails the message (source: contact-worker/ on the dev branch)
+  var FORM_ENDPOINT = 'https://contact-form.isaac-hartman.workers.dev';
 
   var modal = document.getElementById('contactModal');
   var form = document.getElementById('contactForm');
