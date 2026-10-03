@@ -117,6 +117,75 @@ footer {
 .rise { opacity: 0; transform: translateY(14px); animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .d1 { animation-delay: 0.15s; } .d2 { animation-delay: 0.3s; } .d3 { animation-delay: 0.45s; } .d4 { animation-delay: 0.6s; }
 
+
+.btn {
+  display: inline-block;
+  margin-top: 34px;
+  padding: 16px 30px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.btn:hover, .btn:focus-visible { background: transparent; color: #fff; }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--gutter);
+  background: rgba(10,10,9,0.7);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal-overlay.is-open { opacity: 1; visibility: visible; }
+.modal {
+  position: relative;
+  width: 100%; max-width: 480px;
+  max-height: 100%; overflow-y: auto;
+  padding: 40px;
+  background: var(--paper); color: var(--ink);
+  transform: translateY(16px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-overlay.is-open .modal { transform: none; }
+.modal-close {
+  position: absolute; top: 12px; right: 16px;
+  background: none; border: 0; color: inherit;
+  font-size: 28px; line-height: 1; cursor: pointer;
+}
+.tag {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  opacity: 0.6; margin-bottom: 8px;
+}
+.modal h2 {
+  font-family: var(--font-head); font-weight: 400;
+  font-size: 1.9rem; letter-spacing: -0.01em; margin-bottom: 24px;
+}
+.form-row { margin-bottom: 16px; }
+.form-row label {
+  display: block; margin-bottom: 6px;
+  font-family: var(--font-head); font-weight: 700;
+  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.form-row input, .form-row textarea {
+  width: 100%; padding: 12px 14px;
+  font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+  background: #fff; border: 1px solid rgba(14,14,13,0.25); border-radius: 0;
+}
+.form-row input:focus, .form-row textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+.hp { position: absolute; left: -9999px; }
+.btn-send { width: 100%; margin-top: 8px; color: var(--paper); background: var(--ink); border-color: var(--ink); }
+.btn-send:hover, .btn-send:focus-visible { background: transparent; color: var(--ink); }
+.btn-send[disabled] { opacity: 0.6; cursor: wait; }
+.form-note { min-height: 1.4em; margin-top: 14px; font-size: 0.95rem; }
+
 @keyframes rise { to { opacity: 1; transform: none; } }
 @keyframes settle { from { transform: scale(1.1); opacity: 0.6; } to { transform: scale(1.04); opacity: 1; } }
 
@@ -142,11 +211,88 @@ footer {
       <p class="eyebrow rise d2">/Creative Portfolio</p>
       <h1 class="rise d3">Coming<br><em>soon.</em></h1>
       <p class="sub rise d4">Check back shortly.</p>
+      <button type="button" class="btn rise d4" id="contactOpen">Send me a message</button>
     </section>
 
     <footer class="rise d4">&copy; <span id="y">2026</span> Isaac Hartman</footer>
   </main>
 
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <div class="modal-overlay" id="contactModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <button class="modal-close" id="contactModalClose" aria-label="Close contact form">&times;</button>
+      <p class="tag">Contact</p>
+      <h2 id="contactModalTitle">Let's start something.</h2>
+      <form id="contactForm" method="post">
+        <div class="form-row">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required>
+        </div>
+        <div class="form-row">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+        <div class="form-row">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+        </div>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn btn-send" id="cfSend">Send Message</button>
+        <p class="form-note" id="formNote" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+document.getElementById('y').textContent = new Date().getFullYear();
+
+  // Set this to your form endpoint (e.g. a Formspree URL: https://formspree.io/f/xxxxxxxx)
+  var FORM_ENDPOINT = 'https://formspree.io/f/xdekqjqq';
+
+  var modal = document.getElementById('contactModal');
+  var form = document.getElementById('contactForm');
+  var note = document.getElementById('formNote');
+  var sendBtn = document.getElementById('cfSend');
+  var openBtn = document.getElementById('contactOpen');
+
+  function openModal() {
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('cf-name').focus();
+  }
+  function closeModal() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    openBtn.focus();
+  }
+  openBtn.addEventListener('click', openModal);
+  document.getElementById('contactModalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!FORM_ENDPOINT) {
+      note.textContent = 'The contact form isn\u2019t connected yet \u2014 please check back shortly.';
+      return;
+    }
+    sendBtn.disabled = true;
+    note.textContent = 'Sending\u2026';
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('bad response');
+      form.reset();
+      note.textContent = 'Thanks \u2014 your message was sent.';
+    }).catch(function () {
+      note.textContent = 'Something went wrong. Please try again.';
+    }).then(function () { sendBtn.disabled = false; });
+  });
+</script>
 </body>
 </html>
