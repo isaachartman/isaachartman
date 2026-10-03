@@ -1,0 +1,8 @@
+{
+  "name": "contact-form",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "send_email": [
+    { "name": "SEND_EMAIL", "destination_address": "isaac.hartman@gmail.com" }
+  ]
+}
