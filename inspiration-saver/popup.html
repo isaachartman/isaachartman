@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Save inspiration</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="shot"><img id="preview" alt=""><div id="shotPlaceholder">Capturing…</div></div>
+  <div class="meta">
+    <div id="pageTitle" class="title"></div>
+    <div id="pageHost" class="host"></div>
+  </div>
+  <form id="form">
+    <input id="note" type="text" placeholder="One-line note, #tags inline" autocomplete="off" disabled>
+    <button id="save" type="submit" disabled>Save</button>
+  </form>
+  <div id="status" role="status"></div>
+  <div id="setup" hidden>
+    <button id="grant" type="button">Allow folder access</button>
+  </div>
+  <a id="openWall" href="#">Open wall →</a>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
