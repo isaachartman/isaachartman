@@ -363,7 +363,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .hero-head {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px clamp(32px, 5vw, 80px);
+  gap: 24px 0;
   align-items: start;
   margin-bottom: clamp(12px, 1.6vw, 20px);
 }
@@ -430,15 +430,15 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   padding-bottom: 0;
 }
 .projects-header-grid {
-  display: flex;
-  align-items: flex-end;
-  gap: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 20px 0;
   border-bottom: 1px solid var(--line);
   padding-bottom: clamp(28px, 4vw, 48px);
 }
 .projects-header-grid h1 {
   font-size: clamp(2.4rem, 6vw, 4rem);
-  flex-shrink: 0;
 }
 .projects-header-grid p {
   padding-left: 40px;
@@ -447,7 +447,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   max-width: 46ch;
   border-left: 2px solid gray;
 }
-.projects-header-grid .btn { flex-shrink: 0; white-space: nowrap; margin-left: auto; }
+.projects-header-grid .btn { grid-column: 2; justify-self: end; white-space: nowrap; }
 
 .project-entry {
   display: block;
@@ -683,7 +683,8 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .cv-skills-grid { grid-template-columns: repeat(2, 1fr); }
   .modal-project-grid { grid-template-columns: 1fr; }
-  .projects-header-grid { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .projects-header-grid { grid-template-columns: 1fr; }
+  .projects-header-grid .btn { grid-column: auto; justify-self: start; }
   .project-entry-head { flex-direction: column; align-items: flex-start; gap: 8px; }
   .project-entry-head .project-meta { flex-direction: row; align-items: baseline; gap: 8px; text-align: left; }
   .cv-row { grid-template-columns: 1fr; gap: 14px; }
