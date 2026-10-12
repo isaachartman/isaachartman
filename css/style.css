@@ -362,18 +362,12 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   margin-top: 14px;
 }
 .hero-title em { font-style: italic; font-family: var(--font-body); font-weight: 500; }
-.hero-intro {
-  display: flex;
-  flex-direction: column;
-  padding-top: clamp(12px, 2.4vw, 36px);
-}
+.hero-intro { padding-top: clamp(12px, 2.4vw, 36px); }
 .hero-sub {
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   line-height: 1.5;
   max-width: 46ch;
-  margin-bottom: 28px;
 }
-.hero-intro .btn { align-self: flex-end; }
 .hero-figure { aspect-ratio: 21 / 8; }
 
 /* =========================================================
