@@ -130,7 +130,7 @@ input, textarea { font-family: var(--font-body); }
 }
 .section-head { margin-bottom: clamp(28px, 4vw, 48px); }
 
-/* Homepage sections are separated by a full-width double rule, drawn by a
+/* Homepage sections are separated by a full-width rule, drawn by a
    viewport-wide pseudo-element so it isn't boxed in by the 1400px column.
    Scoped to .home so the inner pages keep their own header spacing. */
 .home main > .section:not(#hero) {
@@ -147,7 +147,7 @@ input, textarea { font-family: var(--font-body); }
   width: 100vw;
   height: 0;
   transform: translateX(-50%);
-  border-top: 4px double var(--ink);
+  border-top: 1px solid var(--ink);
 }
 
 .tag {
