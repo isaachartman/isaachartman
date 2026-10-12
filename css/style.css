@@ -364,9 +364,11 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .hero-title em { font-style: italic; font-family: var(--font-body); font-weight: 500; }
 .hero-intro { padding-top: clamp(12px, 2.4vw, 36px); }
 .hero-sub {
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-  line-height: 1.5;
+  padding-left: 40px;
+  color: var(--muted);
+  font-size: 15px;
   max-width: 46ch;
+  border-left: 2px solid gray;
 }
 .hero-figure { height: 370px; }
 
