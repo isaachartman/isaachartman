@@ -13,7 +13,7 @@
 
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="home">
 
 <!-- Cursor dot -->
 <div class="cursor-dot" id="cursorDot"><span class="cursor-dot-inner"></span></div>
@@ -49,17 +49,19 @@
 
   <!-- ============ HERO ============ -->
   <section class="section hero" id="hero" data-nav-title="Home">
-    <div class="hero-bg hover-img">
+    <div class="hero-head reveal" style="--i:0">
+      <div class="hero-text">
+        <p class="eyebrow">/Creative Portfolio</p>
+        <h1 class="hero-title">Design <em>focuses</em> your message.</h1>
+      </div>
+      <div class="hero-intro">
+        <p class="hero-sub">I'm Isaac Hartman — a designer &amp; photographer building work that sits at the edge of structure and feeling.</p>
+        <a href="#featured" class="btn btn-outline" data-scroll>View Work ↓</a>
+      </div>
+    </div>
+    <div class="hero-figure hover-img reveal" style="--i:1">
       <img src="assets/images/hero-bkg.jpeg" alt="" />
     </div>
-    <div class="hero-scrim"></div>
-    <div class="hero-content">
-      <p class="eyebrow">/Creative Portfolio</p>
-      <h1 class="hero-title">Design<br><em>focuses</em>&nbsp your<br>message.</h1>
-      <p class="hero-sub">I'm Isaac Hartman — a designer &amp; photographer building work that sits at the edge of structure and feeling.</p>
-      <a href="#featured" class="btn btn-primary" data-scroll>View Work ↓</a>
-    </div>
-    <div class="hero-scroll-cue" aria-hidden="true"><span></span> Scroll</div>
   </section>
 
   <!-- ============ FEATURED PROJECT ============ -->

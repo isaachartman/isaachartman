@@ -79,7 +79,7 @@
   --font-body: 'Lora', Georgia, 'Times New Roman', serif;
 
   --ink: #0e0e0d;
-  --paper: #f7f5f0;
+  --paper: #ffffff;
   --paper-2: #ffffff;
   --line: rgba(14, 14, 13, 0.14);
   --line-strong: rgba(14, 14, 13, 0.35);
@@ -100,7 +100,7 @@
 html { scroll-behavior: auto; } /* JS drives smooth-scroll easing */
 body {
   margin: 0;
-  overflow-x: hidden; /* guards against the full-bleed section-tint trick below */
+  overflow-x: hidden; /* guards against the full-bleed section dividers below */
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
@@ -130,19 +130,24 @@ input, textarea { font-family: var(--font-body); }
 }
 .section-head { margin-bottom: clamp(28px, 4vw, 48px); }
 
-/* Tinted sections (Work, Skills, FAQ) — full-bleed band behind the
-   normal max-width:1400px content, via a viewport-wide pseudo-element
-   so the tint isn't boxed in on wide screens. */
-#latest, #skills, #faq { position: relative; }
-#latest::before, #skills::before, #faq::before {
+/* Homepage sections are separated by a full-width double rule, drawn by a
+   viewport-wide pseudo-element so it isn't boxed in by the 1400px column.
+   Scoped to .home so the inner pages keep their own header spacing. */
+.home main > .section:not(#hero) {
+  position: relative;
+  padding-top: clamp(40px, 5vw, 64px);
+}
+.home .site-footer { position: relative; }
+.home main > .section:not(#hero)::before,
+.home .site-footer::before {
   content: '';
   position: absolute;
-  top: 0; bottom: 0;
+  top: 0;
   left: 50%;
   width: 100vw;
+  height: 0;
   transform: translateX(-50%);
-  background: #ECE8E4;
-  z-index: -1;
+  border-top: 4px double var(--ink);
 }
 
 .tag {
@@ -266,16 +271,10 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   top: 0; left: 0; right: 0;
   z-index: 1000;
   height: var(--nav-h);
-  background: rgba(247, 245, 240, 0.55);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   border-bottom: 1px solid rgba(14, 14, 13, 0.08);
-  transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
-}
-.glass-nav.on-hero {
-  background: rgba(20, 20, 18, 0.25);
-  border-bottom-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
 }
 .nav-inner {
   max-width: 1400px;
@@ -345,78 +344,37 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
    HERO
    ========================================================= */
 .hero {
-  position: relative;
-  min-height: 100vh;
-  max-width: none;
-  padding: calc(var(--nav-h) + clamp(28px, 6vw, 80px) + 60px) 0 0;
+  padding-top: calc(var(--nav-h) + clamp(32px, 5vw, 64px));
+  padding-bottom: 0;
   margin-bottom: 40px;
-  display: flex;
-  align-items: flex-start;
-  overflow: hidden;
-  color: #fff;
 }
-.hero-bg {
-  position: absolute;
-  top: -15%; left: 0; right: 0;
-  height: 130%;
-  cursor: auto;
-  will-change: transform;
-}
-.hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.55) brightness(0.85); transform: scale(1.06); transition: filter 1.2s var(--ease); }
-.hero-scrim {
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(10,10,9,0.15) 0%, rgba(10,10,9,0.15) 40%, rgba(10,10,9,0.75) 100%);
-}
-.hero-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-  text-align: right;
+.hero-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px clamp(32px, 5vw, 80px);
+  align-items: start;
+  margin-bottom: clamp(28px, 4vw, 56px);
 }
 .hero-title {
-  font-size: clamp(2.6rem, 7vw, 5.4rem);
-  margin-bottom: 22px;
-  margin-left: auto;
-  max-width: 900px;
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-top: 14px;
 }
 .hero-title em { font-style: italic; font-family: var(--font-body); font-weight: 500; }
-.hero-sub {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  max-width: 46ch;
-  margin-bottom: 34px;
-  margin-left: auto;
-  opacity: 0.92;
-}
-.hero .btn-primary { background: #fff; color: var(--ink); border-color: #fff; }
-.hero .btn-primary:hover { background: transparent; color: #fff; }
-.hero-scroll-cue {
-  position: absolute;
-  right: var(--gutter);
-  bottom: 32px;
-  z-index: 2;
+.hero-intro {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-head);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  flex-direction: column;
+  padding-top: clamp(12px, 2.4vw, 36px);
 }
-.hero-scroll-cue span {
-  width: 1px; height: 34px;
-  background: rgba(255,255,255,0.6);
-  position: relative;
-  overflow: hidden;
+.hero-sub {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.5;
+  max-width: 46ch;
+  margin-bottom: 28px;
 }
-.hero-scroll-cue span::after {
-  content: ''; position: absolute; left: 0; top: -100%; width: 100%; height: 100%;
-  background: #fff;
-  animation: scrollLine 1.8s ease-in-out infinite;
-}
-@keyframes scrollLine { 0% { top: -100%; } 60% { top: 100%; } 100% { top: 100%; } }
+.hero-intro .btn { align-self: flex-end; }
+.hero-figure { aspect-ratio: 21 / 8; }
 
 /* =========================================================
    FEATURED PROJECT
@@ -747,4 +705,6 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   .project-thumb { width: 125px; }
   .project-meta { display: none; }
   .skills-grid { grid-template-columns: 1fr 1fr; }
+  .hero-head { grid-template-columns: 1fr; }
+  .hero-figure { aspect-ratio: 4 / 3; }
 }
