@@ -364,7 +364,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .hero {
   padding-top: calc(var(--nav-h) + 24px);
   padding-bottom: 0;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 }
 .hero-head {
   display: grid;
