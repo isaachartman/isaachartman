@@ -295,10 +295,9 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   background: currentColor;
   flex-shrink: 0;
 }
-.logo-state { position: relative; display: block; height: 20px; overflow: hidden; min-width: 150px; }
+.logo-state { display: grid; height: 20px; overflow: hidden; min-width: 150px; }
 .logo-word, .logo-section {
-  position: absolute;
-  left: 0; top: 0;
+  grid-area: 1 / 1;
   white-space: nowrap;
   font-family: var(--font-head);
   font-weight: 700;
