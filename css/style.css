@@ -463,7 +463,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   margin-bottom: 24px;
 }
 .project-entry-title { font-size: clamp(1.8rem, 4vw, 3rem); }
-.project-entry-media { aspect-ratio: 16 / 9; }
+.project-entry-media { height: 540px; }
 
 /* =========================================================
    ABOUT
