@@ -353,7 +353,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   grid-template-columns: 1fr 1fr;
   gap: 24px clamp(32px, 5vw, 80px);
   align-items: start;
-  margin-bottom: clamp(28px, 4vw, 56px);
+  margin-bottom: clamp(12px, 1.6vw, 20px);
 }
 .hero-title {
   font-size: clamp(2.6rem, 6vw, 5.5rem);
@@ -368,7 +368,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   line-height: 1.5;
   max-width: 46ch;
 }
-.hero-figure { aspect-ratio: 21 / 8; }
+.hero-figure { height: 370px; }
 
 /* =========================================================
    FEATURED PROJECT
@@ -700,5 +700,4 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   .project-meta { display: none; }
   .skills-grid { grid-template-columns: 1fr 1fr; }
   .hero-head { grid-template-columns: 1fr; }
-  .hero-figure { aspect-ratio: 4 / 3; }
 }
