@@ -453,7 +453,6 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   max-width: 46ch;
   border-left: 2px solid gray;
 }
-.projects-header-grid .btn { grid-column: 2; justify-self: end; white-space: nowrap; }
 
 .project-entry {
   display: block;
@@ -504,7 +503,6 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   gap: 48px;
 }
 .about-copy p { color: var(--muted); font-size: 15px; }
-.about-grid > .btn { align-self: flex-start; }
 
 /* =========================================================
    CREATIVE EXPLORATIONS
@@ -690,7 +688,6 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   .cv-skills-grid { grid-template-columns: repeat(2, 1fr); }
   .modal-project-grid { grid-template-columns: 1fr; }
   .projects-header-grid { grid-template-columns: 1fr; }
-  .projects-header-grid .btn { grid-column: auto; justify-self: start; }
   .project-entry-head { flex-direction: column; align-items: flex-start; gap: 8px; }
   .project-entry-head .project-meta { flex-direction: row; align-items: baseline; gap: 8px; text-align: left; }
   .cv-row { grid-template-columns: 1fr; gap: 14px; }
