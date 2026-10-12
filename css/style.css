@@ -130,9 +130,9 @@ input, textarea { font-family: var(--font-body); }
 }
 .section-head { margin-bottom: clamp(28px, 4vw, 48px); }
 
-/* Homepage sections are separated by a full-width rule, drawn by a
-   viewport-wide pseudo-element so it isn't boxed in by the 1400px column.
-   Scoped to .home so the inner pages keep their own header spacing. */
+/* Homepage sections are separated by a hairline that matches the rules
+   between projects on projects.html: same color and weight, held to the
+   content column. Scoped to .home so inner pages keep their own spacing. */
 .home main > .section:not(#hero) {
   position: relative;
   padding-top: clamp(40px, 5vw, 64px);
@@ -143,11 +143,10 @@ input, textarea { font-family: var(--font-body); }
   content: '';
   position: absolute;
   top: 0;
-  left: 50%;
-  width: 100vw;
+  left: var(--gutter);
+  right: var(--gutter);
   height: 0;
-  transform: translateX(-50%);
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid var(--line);
 }
 
 /* Grey bands (Featured, About, Explorations) — full-bleed behind the column. */
