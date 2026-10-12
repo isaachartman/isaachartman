@@ -130,9 +130,10 @@ input, textarea { font-family: var(--font-body); }
 }
 .section-head { margin-bottom: clamp(28px, 4vw, 48px); }
 
-/* Homepage sections are separated by a hairline that matches the rules
-   between projects on projects.html: same color and weight, held to the
-   content column. Scoped to .home so inner pages keep their own spacing. */
+/* Homepage sections are separated by a full-width hairline (same color and
+   weight as the rules between projects on projects.html), drawn by a
+   viewport-wide pseudo-element so it lines up with the full-bleed section
+   backgrounds. Scoped to .home so inner pages keep their own spacing. */
 .home main > .section:not(#hero) {
   position: relative;
   padding-top: clamp(40px, 5vw, 64px);
@@ -143,9 +144,10 @@ input, textarea { font-family: var(--font-body); }
   content: '';
   position: absolute;
   top: 0;
-  left: var(--gutter);
-  right: var(--gutter);
+  left: 50%;
+  width: 100vw;
   height: 0;
+  transform: translateX(-50%);
   border-top: 1px solid var(--line);
 }
 
