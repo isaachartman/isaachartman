@@ -346,7 +346,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .hero {
   padding-top: calc(var(--nav-h) + clamp(32px, 5vw, 64px));
   padding-bottom: 0;
-  margin-bottom: 0px;
+  margin-bottom: 40px;
 }
 .hero-head {
   display: grid;
@@ -359,7 +359,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   font-size: clamp(2.6rem, 6vw, 5.5rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  margin-top: 0px;
+  margin-top: 10px;
 }
 .hero-title em { font-style: italic; font-family: var(--font-body); font-weight: 500; }
 .hero-intro { padding-top: clamp(12px, 2.4vw, 36px); }
