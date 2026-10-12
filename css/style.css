@@ -356,7 +356,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
    HERO
    ========================================================= */
 .hero {
-  padding-top: calc(var(--nav-h) + clamp(32px, 5vw, 64px));
+  padding-top: calc(var(--nav-h) + 24px);
   padding-bottom: 0;
   margin-bottom: 40px;
 }
@@ -382,7 +382,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   max-width: 46ch;
   border-left: 2px solid gray;
 }
-.hero-figure { height: 370px; }
+.hero-figure { height: 410px; }
 
 /* =========================================================
    FEATURED PROJECT
