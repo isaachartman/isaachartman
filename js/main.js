@@ -122,6 +122,24 @@
   }
 
   /* -----------------------------------------------------
+     TOUCH: color on scroll
+     With no hover on touch screens, an image goes from black
+     and white to color while it crosses the middle band of the
+     viewport, and back again as it scrolls away.
+  ----------------------------------------------------- */
+  if (window.matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+    var focusObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('in-view', entry.isIntersecting);
+      });
+    }, { rootMargin: '-35% 0px -35% 0px', threshold: 0 });
+
+    document.querySelectorAll('.hover-img').forEach(function (el) {
+      focusObserver.observe(el);
+    });
+  }
+
+  /* -----------------------------------------------------
      HERO PARALLAX
      The background drifts at a fraction of scroll speed.
      .hero-bg is oversized in CSS (top:-8%, height:116%) so

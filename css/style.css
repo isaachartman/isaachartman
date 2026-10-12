@@ -274,7 +274,12 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   transition: filter 0.6s var(--ease), transform 0.6s var(--ease);
 }
 .hover-img:hover img { filter: grayscale(0); transform: scale(1.04); }
-@media (hover: none) { .hover-img { cursor: auto; } .hover-img img { filter: grayscale(0.4); } }
+/* Touch screens have no hover: an image turns to color while it sits in the
+   middle band of the screen (.in-view is toggled by main.js). */
+@media (hover: none) {
+  .hover-img { cursor: auto; }
+  .hover-img.in-view img { filter: grayscale(0); transform: scale(1.04); }
+}
 
 /* =========================================================
    NAV — glassy / blurred
