@@ -30,8 +30,8 @@
   --font-body: 'Lora', Georgia, 'Times New Roman', serif;
   --ink: #0e0e0d;
   --paper: #ffffff;
-  --line: rgba(14, 14, 13, 0.14);
-  --muted: #6c6a63;
+  --line: rgba(255, 255, 255, 0.35);
+  --muted: rgba(255, 255, 255, 0.85);
   --ease: cubic-bezier(0.65, 0, 0.35, 1);
   --gutter: clamp(20px, 5vw, 64px);
 }
@@ -41,8 +41,8 @@
 html, body { height: 100%; }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--ink);
+  color: #fff;
   font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.6;
@@ -50,7 +50,21 @@ body {
   overflow: hidden;
 }
 
+/* Full-screen photo behind the page, darkened for legibility */
+.bg {
+  position: fixed; inset: 0;
+  background: url('assets/images/hero-bg.webp') center / cover no-repeat;
+  transform: scale(1.04);
+  animation: settle 2.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.scrim {
+  position: fixed; inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,9,0.5) 0%, rgba(10,10,9,0.5) 35%, rgba(10,10,9,0.8) 100%);
+}
+
 main {
+  position: relative;
+  z-index: 1;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -76,12 +90,12 @@ main {
   background: currentColor;
 }
 
-.hero { padding-top: 64px; }
+.hero { margin: auto 0; padding: 32px 0; }
 .hero-head {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px 0;
-  align-items: start;
+  align-items: center;
 }
 
 h1 {
@@ -90,21 +104,18 @@ h1 {
   font-size: clamp(2.6rem, 6vw, 5.5rem);
   line-height: 0.95;
   letter-spacing: -0.03em;
-  margin-top: 10px;
   text-wrap: balance;
 }
 
-.hero-intro { padding-top: clamp(12px, 2.4vw, 36px); }
 .sub {
   padding-left: 40px;
   color: var(--muted);
   font-size: 15px;
   max-width: 46ch;
-  border-left: 2px solid gray;
+  border-left: 2px solid rgba(255, 255, 255, 0.6);
 }
 
 footer {
-  margin-top: auto;
   border-top: 1px solid var(--line);
   padding: 24px 0 40px;
   font-family: var(--font-head);
@@ -129,20 +140,19 @@ footer {
   font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--paper);
-  background: var(--ink);
-  border: 1px solid var(--ink);
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #fff;
   cursor: pointer;
   transition: background 0.3s var(--ease), color 0.3s var(--ease);
 }
-.btn:hover, .btn:focus-visible { background: transparent; color: var(--ink); }
+.btn:hover, .btn:focus-visible { background: transparent; color: #fff; }
 
 .modal-overlay {
   position: fixed; inset: 0; z-index: 10;
   display: flex; align-items: center; justify-content: center;
   padding: var(--gutter);
-  background: rgba(255,255,255,0.7);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  background: rgba(10,10,9,0.7);
   opacity: 0; visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
@@ -153,7 +163,6 @@ footer {
   max-height: 100%; overflow-y: auto;
   padding: 40px;
   background: var(--paper); color: var(--ink);
-  border: 1px solid var(--ink);
   transform: translateY(16px);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -187,24 +196,29 @@ footer {
 }
 .form-row input:focus, .form-row textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
 .hp { position: absolute; left: -9999px; }
-.btn-send { width: 100%; margin: 8px 0 0; }
+.btn-send { width: 100%; margin: 8px 0 0; color: var(--paper); background: var(--ink); border-color: var(--ink); }
+.btn-send:hover, .btn-send:focus-visible { background: transparent; color: var(--ink); }
 .btn-send[disabled] { opacity: 0.6; cursor: wait; }
 .form-note { min-height: 1.4em; margin-top: 14px; font-size: 0.95rem; }
 
 @keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes settle { from { transform: scale(1.1); opacity: 0.6; } to { transform: scale(1.04); opacity: 1; } }
 
 @media (max-width: 720px) {
   .hero-head { grid-template-columns: 1fr; }
-  .hero { padding-top: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise { animation: none; opacity: 1; transform: none; }
+  .bg, .rise { animation: none; opacity: 1; transform: none; }
+  .bg { transform: scale(1.04); }
 }
 
 </style>
 </head>
 <body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="scrim" aria-hidden="true"></div>
+
   <main>
     <div class="name rise d1">Isaac Hartman</div>
 
