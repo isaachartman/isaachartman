@@ -397,7 +397,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .hero-sub {
   padding-left: 40px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 17px;
   max-width: 46ch;
   border-left: 2px solid gray;
 }
@@ -414,7 +414,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 }
 .featured-media { aspect-ratio: 4 / 3; }
 .featured-info h3 { font-size: clamp(1.4rem, 2.4vw, 2rem); font-weight: 600; line-height: 1.3; margin-bottom: 20px; }
-.featured-copy { color: var(--muted); font-size: 15px; max-width: 46ch; margin-bottom: 24px; }
+.featured-copy { color: var(--muted); font-size: 17px; max-width: 46ch; margin-bottom: 24px; }
 .link-arrow { font-family: var(--font-head); font-weight: 700; font-size: 13px; letter-spacing: 0.03em; }
 
 /* =========================================================
@@ -463,7 +463,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .projects-header-grid p {
   padding-left: 40px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 17px;
   max-width: 46ch;
   border-left: 2px solid gray;
 }
@@ -517,7 +517,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   grid-template-columns: 1fr 1fr;
   gap: 48px;
 }
-.about-copy p { color: var(--muted); font-size: 15px; }
+.about-copy p { color: var(--muted); font-size: 17px; }
 
 /* =========================================================
    CREATIVE EXPLORATIONS
@@ -550,7 +550,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .faq-icon::before { width: 14px; height: 1.5px; }
 .faq-icon::after { width: 1.5px; height: 14px; transition: transform 0.3s var(--ease); }
 .faq-item[open] .faq-icon::after { transform: translate(-50%, -50%) rotate(90deg) scaleY(0); }
-.faq-item p { margin-top: 14px; color: var(--muted); max-width: 60ch; }
+.faq-item p { margin-top: 14px; color: var(--muted); font-size: 17px; max-width: 60ch; }
 
 /* =========================================================
    SKILLS
@@ -579,7 +579,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   border-bottom: 1px solid var(--line);
 }
 .cv-row-label { font-size: clamp(1.2rem, 2vw, 1.5rem); }
-.cv-row-content > p { color: var(--muted); font-size: 15px; max-width: 60ch; }
+.cv-row-content > p { color: var(--muted); font-size: 17px; max-width: 60ch; }
 
 .cv-job + .cv-job { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--line); }
 .cv-job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
@@ -682,7 +682,8 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .modal-project-info h2 { margin-bottom: 22px; }
 .modal-project-info .tag { margin-top: 20px; margin-bottom: 10px; }
 .modal-project-info .tag:first-of-type { margin-top: 0; }
-.modal-project-info p { color: var(--muted); font-size: 15px; }
+.modal-project-info p { color: var(--muted); font-size: 17px; }
+.modal-project-info p.tag { font-size: 15px; }
 .modal-project-info strong { color: var(--ink); font-family: var(--font-head); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
 .modal-project-info ul { margin-top: 6px; }
 .modal-project-info ul li { padding: 6px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
