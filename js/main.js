@@ -327,6 +327,7 @@
   var projectModal = document.getElementById('projectModal');
   var pmImage = document.getElementById('pmImage');
   var pmMedia = pmImage.parentNode;
+  var pmLink = document.getElementById('pmLink');
   var pmDate = document.getElementById('pmDate');
   var pmCategory = document.getElementById('pmCategory');
   var pmDescription = document.getElementById('pmDescription');
@@ -357,6 +358,10 @@
       pmDate.textContent = card.getAttribute('data-date') || '';
       pmCategory.textContent = card.getAttribute('data-category') || '';
       pmDescription.textContent = card.getAttribute('data-description') || '';
+      // Optional data-url: a "Visit website" link, hidden for projects without one.
+      var url = card.getAttribute('data-url') || '';
+      pmLink.hidden = !url;
+      pmLink.href = url || '#';
 
       var deliverables = (card.getAttribute('data-deliverables') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
       pmDeliverables.innerHTML = '';
