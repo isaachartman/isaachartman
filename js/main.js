@@ -116,7 +116,7 @@
 
   if (hasFinePointer) {
     var TRAIL_COUNT = 4;
-    var TRAIL_EASE = 0.45;
+    var TRAIL_EASE = 0.32;
     var trail = [];
     var pointer = { x: 0, y: 0, seen: false };
     var overImage = false;
@@ -135,7 +135,7 @@
     function drawTrail(t, i) {
       var fade = 1 - (i + 1) / (TRAIL_COUNT + 1);
       t.el.style.transform = 'translate(' + t.x + 'px, ' + t.y + 'px) scale(' + (0.35 + fade * 0.55) + ')';
-      t.el.style.opacity = overImage ? (fade * 0.25).toFixed(3) : 0;
+      t.el.style.opacity = overImage ? (fade * 0.4).toFixed(3) : 0;
     }
 
     function stepTrail() {
