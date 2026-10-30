@@ -353,7 +353,7 @@
         img.alt = title + ' — view ' + (i + 2);
         pmMedia.appendChild(img);
       });
-      pmMedia.classList.toggle('has-gallery', images.length > 1);
+      pmMedia.classList.toggle('has-gallery', images.length > 0);
       projectModal.querySelector('.modal').scrollTop = 0;
       pmDate.textContent = card.getAttribute('data-date') || '';
       pmCategory.textContent = card.getAttribute('data-category') || '';
