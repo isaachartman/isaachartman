@@ -120,6 +120,8 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 p { margin: 0; }
+/* Every paragraph reads in Lora, including the small uppercase label paragraphs. */
+p, p.meta, p.tag, .modal-project-info p strong { font-family: var(--font-body); }
 button { font-family: inherit; cursor: pointer; }
 input, textarea { font-family: var(--font-body); }
 
