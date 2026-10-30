@@ -77,6 +77,7 @@
 :root {
   --font-head: 'Safiro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-body: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-p: 'Playfair Display', Georgia, 'Times New Roman', serif;
 
   --ink: #0e0e0d;
   --paper: #ffffff;
@@ -120,8 +121,8 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 p { margin: 0; }
-/* Every paragraph reads in Lora, including the small uppercase label paragraphs. */
-p, p.meta, p.tag, .modal-project-info p strong { font-family: var(--font-body); }
+/* Every paragraph reads in Playfair Display, including the small uppercase label paragraphs. */
+p, p.meta, p.tag, .modal-project-info p strong { font-family: var(--font-p); }
 button { font-family: inherit; cursor: pointer; }
 input, textarea { font-family: var(--font-body); }
 
