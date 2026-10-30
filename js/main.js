@@ -326,6 +326,7 @@
   ----------------------------------------------------- */
   var projectModal = document.getElementById('projectModal');
   var pmImage = document.getElementById('pmImage');
+  var pmMedia = pmImage.parentNode;
   var pmDate = document.getElementById('pmDate');
   var pmCategory = document.getElementById('pmCategory');
   var pmDescription = document.getElementById('pmDescription');
@@ -337,8 +338,22 @@
     card.addEventListener('click', function (e) {
       e.preventDefault();
       projectModalTitle.textContent = card.getAttribute('data-title') || '';
-      pmImage.src = card.getAttribute('data-img') || '';
-      pmImage.alt = card.getAttribute('data-title') || '';
+      // Optional data-images: a comma-separated list stacked in the media column
+      // (data-img stays the single image / cover for projects without a gallery).
+      var images = (card.getAttribute('data-images') || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+      var title = card.getAttribute('data-title') || '';
+      pmMedia.querySelectorAll('.pm-extra').forEach(function (img) { img.remove(); });
+      pmImage.src = images.length ? images[0] : (card.getAttribute('data-img') || '');
+      pmImage.alt = title;
+      images.slice(1).forEach(function (src, i) {
+        var img = document.createElement('img');
+        img.className = 'pm-extra';
+        img.src = src;
+        img.alt = title + ' — view ' + (i + 2);
+        pmMedia.appendChild(img);
+      });
+      pmMedia.classList.toggle('has-gallery', images.length > 1);
+      projectModal.querySelector('.modal').scrollTop = 0;
       pmDate.textContent = card.getAttribute('data-date') || '';
       pmCategory.textContent = card.getAttribute('data-category') || '';
       pmDescription.textContent = card.getAttribute('data-description') || '';
