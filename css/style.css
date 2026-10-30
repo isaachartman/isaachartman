@@ -122,7 +122,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 p { margin: 0; }
 /* Every paragraph reads in Playfair Display, including the small uppercase label paragraphs. */
-p, p.meta, p.tag, .modal-project-info p strong { font-family: var(--font-p); }
+p, p.meta, .modal-project-info p strong { font-family: var(--font-p); }
 button { font-family: inherit; cursor: pointer; }
 input, textarea { font-family: var(--font-body); }
 
@@ -687,7 +687,7 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
 .modal-project-info .tag { margin-top: 20px; margin-bottom: 10px; }
 .modal-project-info .tag:first-of-type { margin-top: 0; }
 .modal-project-info p { color: var(--muted); font-size: 16px; }
-.modal-project-info p.tag { font-size: 15px; }
+.modal-project-info p.tag { font-size: 15px; color: #fff; }
 .modal-project-info strong { color: var(--ink); font-family: var(--font-head); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
 .modal-project-info ul { margin-top: 6px; }
 .modal-project-info ul li { padding: 6px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
