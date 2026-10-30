@@ -106,18 +106,82 @@
   }
 
   /* -----------------------------------------------------
-     CURSOR DOT — tracks the pointer 1:1, no lag/trail.
+     CURSOR DOT — tracks the pointer 1:1. A short chain of
+     smaller, fainter dots eases along behind it as a fading
+     trail; each follows the one ahead, and the loop stops once
+     they have all caught up.
   ----------------------------------------------------- */
   var hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (hasFinePointer) {
+    var TRAIL_COUNT = 4;
+    var TRAIL_EASE = 0.45;
+    var trail = [];
+    var pointer = { x: 0, y: 0, seen: false };
+    var overImage = false;
+    var trailRunning = false;
+
+    if (!reduceMotion) {
+      for (var i = 0; i < TRAIL_COUNT; i++) {
+        var dot = document.createElement('span');
+        dot.className = 'cursor-trail-dot';
+        dot.setAttribute('aria-hidden', 'true');
+        document.body.insertBefore(dot, cursorDot);
+        trail.push({ el: dot, x: 0, y: 0 });
+      }
+    }
+
+    function drawTrail(t, i) {
+      var fade = 1 - (i + 1) / (TRAIL_COUNT + 1);
+      t.el.style.transform = 'translate(' + t.x + 'px, ' + t.y + 'px) scale(' + (0.35 + fade * 0.55) + ')';
+      t.el.style.opacity = overImage ? (fade * 0.25).toFixed(3) : 0;
+    }
+
+    function stepTrail() {
+      var lead = pointer;
+      var moving = false;
+      trail.forEach(function (t, i) {
+        t.x += (lead.x - t.x) * TRAIL_EASE;
+        t.y += (lead.y - t.y) * TRAIL_EASE;
+        if (Math.abs(lead.x - t.x) > 0.2 || Math.abs(lead.y - t.y) > 0.2) moving = true;
+        drawTrail(t, i);
+        lead = t;
+      });
+      if (moving) {
+        requestAnimationFrame(stepTrail);
+      } else {
+        trailRunning = false;
+      }
+    }
+
     window.addEventListener('mousemove', function (e) {
       cursorDot.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px)';
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      if (!trail.length) return;
+      if (!pointer.seen) {
+        pointer.seen = true;
+        trail.forEach(function (t) { t.x = e.clientX; t.y = e.clientY; });
+      }
+      if (!trailRunning) {
+        trailRunning = true;
+        requestAnimationFrame(stepTrail);
+      }
     });
 
     document.querySelectorAll('.hover-img').forEach(function (el) {
-      el.addEventListener('mouseenter', function () { cursorDot.classList.add('active'); });
-      el.addEventListener('mouseleave', function () { cursorDot.classList.remove('active'); });
+      el.addEventListener('mouseenter', function () {
+        overImage = true;
+        cursorDot.classList.add('active');
+        // Snap the trail to the pointer so it doesn't streak in from where it last rested.
+        trail.forEach(function (t) { t.x = pointer.x; t.y = pointer.y; });
+      });
+      el.addEventListener('mouseleave', function () {
+        overImage = false;
+        cursorDot.classList.remove('active');
+        trail.forEach(drawTrail);
+      });
     });
   }
 

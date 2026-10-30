@@ -237,7 +237,18 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
 }
 .cursor-dot.active .cursor-dot-inner { opacity: 1; transform: scale(1); }
-@media (hover: none) { .cursor-dot { display: none; } }
+.cursor-trail-dot {
+  position: fixed;
+  top: -15px; left: -15px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgb(14, 14, 13);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity 0.25s var(--ease);
+}
+@media (hover: none) { .cursor-dot, .cursor-trail-dot { display: none; } }
 
 /* =========================================================
    SCROLL REVEAL
