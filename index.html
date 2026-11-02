@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css?v=20261030">
+<link rel="stylesheet" href="css/style.css?v=20261102">
 </head>
 <body class="home">
 
@@ -54,7 +54,7 @@
         <h1 class="hero-title">/Creative<br>Portfolio</h1>
       </div>
       <div class="hero-intro">
-        <p class="hero-sub">I work across design and development, spanning brand identity, photography, and the web. Using AI to accelerate code, development, and deployment, I turn design systems and tools into live products.</p>
+        <p class="hero-sub">I work across design and development, spanning brand identity, and the web. Using AI to accelerate code, development, and deployment, I turn design systems and tools into live products.</p>
       </div>
     </div>
     <div class="hero-figure hover-img reveal" style="--i:1">
@@ -186,24 +186,24 @@
         <ul class="skill-tags">
           <li>Art Direction</li>
           <li>Brand Identity</li>
+          <li>Rapid Prototyping</li>
           <li>Product Mockups</li>
-          <li>Typography</li>
         </ul>
       </div>
       <div class="skill-group reveal" style="--i:1">
-        <h4>Publishing Tools</h4>
+        <h4>Asset Creation</h4>
         <ul class="skill-tags">
           <li>Affinity Studio</li>
           <li>Adobe Creative Suite</li>
-          <li>Adobe Express</li>
-          <li>Figma</li>
+          <li>Video Editing</li>
+          <li>Photography</li>
         </ul>
       </div>
       <div class="skill-group reveal" style="--i:2">
         <h4>Web Development</h4>
         <ul class="skill-tags">
           <li>Claude Code</li>
-          <li>GitHub Copilot</li>
+          <li>Cursor</li>
           <li>WordPress</li>
           <li>CSS Frameworks</li>
         </ul>
@@ -219,14 +219,14 @@
     <div class="explorations-grid">
       <div class="exploration-media">
         <div class="explore-gallery">
-          <div class="hover-img reveal" style="--i:0"><img src="https://picsum.photos/seed/ex1/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:1"><img src="https://picsum.photos/seed/ex2/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:2"><img src="https://picsum.photos/seed/ex3/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:3"><img src="https://picsum.photos/seed/ex4/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:4"><img src="https://picsum.photos/seed/ex5/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:5"><img src="https://picsum.photos/seed/ex6/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:6"><img src="https://picsum.photos/seed/ex7/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:7"><img src="https://picsum.photos/seed/ex8/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:0" role="button" tabindex="0" aria-label="Open image 1 of 8" data-lightbox data-full="https://picsum.photos/seed/ex1/1200/1500"><img src="https://picsum.photos/seed/ex1/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:1" role="button" tabindex="0" aria-label="Open image 2 of 8" data-lightbox data-full="https://picsum.photos/seed/ex2/1200/1500"><img src="https://picsum.photos/seed/ex2/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:2" role="button" tabindex="0" aria-label="Open image 3 of 8" data-lightbox data-full="https://picsum.photos/seed/ex3/1200/1500"><img src="https://picsum.photos/seed/ex3/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:3" role="button" tabindex="0" aria-label="Open image 4 of 8" data-lightbox data-full="https://picsum.photos/seed/ex4/1200/1500"><img src="https://picsum.photos/seed/ex4/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:4" role="button" tabindex="0" aria-label="Open image 5 of 8" data-lightbox data-full="https://picsum.photos/seed/ex5/1200/1500"><img src="https://picsum.photos/seed/ex5/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:5" role="button" tabindex="0" aria-label="Open image 6 of 8" data-lightbox data-full="https://picsum.photos/seed/ex6/1200/1500"><img src="https://picsum.photos/seed/ex6/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:6" role="button" tabindex="0" aria-label="Open image 7 of 8" data-lightbox data-full="https://picsum.photos/seed/ex7/1200/1500"><img src="https://picsum.photos/seed/ex7/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:7" role="button" tabindex="0" aria-label="Open image 8 of 8" data-lightbox data-full="https://picsum.photos/seed/ex8/1200/1500"><img src="https://picsum.photos/seed/ex8/400/500" alt=""></div>
         </div>
       </div>
       <div class="exploration-copy reveal" style="--i:1">
@@ -326,6 +326,17 @@
   </div>
 </div>
 
-<script src="js/main.js?v=20261030"></script>
+<!-- ============ EXPLORATIONS LIGHTBOX ============ -->
+<div class="modal-overlay lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image gallery" aria-hidden="true">
+  <button class="modal-close lightbox-close" id="lightboxClose" aria-label="Close gallery">×</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">←</button>
+  <figure class="lightbox-stage">
+    <img id="lightboxImage" src="" alt="">
+    <figcaption id="lightboxCount" class="lightbox-count" aria-live="polite"></figcaption>
+  </figure>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">→</button>
+</div>
+
+<script src="js/main.js?v=20261102"></script>
 </body>
 </html>

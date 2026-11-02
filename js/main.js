@@ -382,4 +382,71 @@
     closeModal(projectModal);
   });
 
+  /* -----------------------------------------------------
+     EXPLORATIONS LIGHTBOX
+     Each [data-lightbox] thumbnail opens a full-size viewer
+     (data-full, falling back to the thumbnail's own src).
+     Arrow buttons, ← / → keys and swipes step through the
+     set; Escape and a click on the backdrop close it (shared
+     modal handlers above).
+  ----------------------------------------------------- */
+  var lightbox = document.getElementById('lightbox');
+  var lbThumbs = Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
+
+  if (lightbox && lbThumbs.length) {
+    var lbImage = document.getElementById('lightboxImage');
+    var lbCount = document.getElementById('lightboxCount');
+    var lbIndex = 0;
+
+    var lbSrc = function (i) {
+      var el = lbThumbs[i];
+      return el.getAttribute('data-full') || el.querySelector('img').src;
+    };
+
+    var lbShow = function (i) {
+      lbIndex = (i + lbThumbs.length) % lbThumbs.length;
+      lbImage.classList.add('is-loading');
+      lbImage.src = lbSrc(lbIndex);
+      lbImage.alt = lbThumbs[lbIndex].querySelector('img').alt || ('Exploration ' + (lbIndex + 1));
+      lbCount.textContent = (lbIndex + 1) + ' / ' + lbThumbs.length;
+      // Warm the neighbours so stepping through feels instant.
+      [lbIndex - 1, lbIndex + 1].forEach(function (n) {
+        new Image().src = lbSrc((n + lbThumbs.length) % lbThumbs.length);
+      });
+    };
+
+    lbImage.addEventListener('load', function () { lbImage.classList.remove('is-loading'); });
+
+    lbThumbs.forEach(function (el, i) {
+      var open = function () {
+        lbShow(i);
+        openModal(lightbox);
+      };
+      el.addEventListener('click', open);
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+      });
+    });
+
+    document.getElementById('lightboxClose').addEventListener('click', function () { closeModal(lightbox); });
+    document.getElementById('lightboxPrev').addEventListener('click', function () { lbShow(lbIndex - 1); });
+    document.getElementById('lightboxNext').addEventListener('click', function () { lbShow(lbIndex + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'ArrowLeft') lbShow(lbIndex - 1);
+      if (e.key === 'ArrowRight') lbShow(lbIndex + 1);
+    });
+
+    // Swipe left / right on touch screens.
+    var lbTouchX = null;
+    lightbox.addEventListener('touchstart', function (e) { lbTouchX = e.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', function (e) {
+      if (lbTouchX === null) return;
+      var dx = e.changedTouches[0].clientX - lbTouchX;
+      lbTouchX = null;
+      if (Math.abs(dx) > 50) lbShow(lbIndex + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  }
+
 })();
