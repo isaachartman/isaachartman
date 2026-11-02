@@ -11,7 +11,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css?v=20261102">
+<link rel="stylesheet" href="css/style.css?v=20261102c">
+<!-- 3D viewer (Explorations lightbox): three.js is only downloaded when a 3D model is first opened. -->
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
 </head>
 <body class="home">
 
@@ -219,14 +226,14 @@
     <div class="explorations-grid">
       <div class="exploration-media">
         <div class="explore-gallery">
-          <div class="hover-img reveal" style="--i:0" role="button" tabindex="0" aria-label="Open image 1 of 8" data-lightbox data-full="https://picsum.photos/seed/ex1/1200/1500"><img src="https://picsum.photos/seed/ex1/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:1" role="button" tabindex="0" aria-label="Open image 2 of 8" data-lightbox data-full="https://picsum.photos/seed/ex2/1200/1500"><img src="https://picsum.photos/seed/ex2/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:2" role="button" tabindex="0" aria-label="Open image 3 of 8" data-lightbox data-full="https://picsum.photos/seed/ex3/1200/1500"><img src="https://picsum.photos/seed/ex3/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:3" role="button" tabindex="0" aria-label="Open image 4 of 8" data-lightbox data-full="https://picsum.photos/seed/ex4/1200/1500"><img src="https://picsum.photos/seed/ex4/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:4" role="button" tabindex="0" aria-label="Open image 5 of 8" data-lightbox data-full="https://picsum.photos/seed/ex5/1200/1500"><img src="https://picsum.photos/seed/ex5/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:5" role="button" tabindex="0" aria-label="Open image 6 of 8" data-lightbox data-full="https://picsum.photos/seed/ex6/1200/1500"><img src="https://picsum.photos/seed/ex6/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:6" role="button" tabindex="0" aria-label="Open image 7 of 8" data-lightbox data-full="https://picsum.photos/seed/ex7/1200/1500"><img src="https://picsum.photos/seed/ex7/400/500" alt=""></div>
-          <div class="hover-img reveal" style="--i:7" role="button" tabindex="0" aria-label="Open image 8 of 8" data-lightbox data-full="https://picsum.photos/seed/ex8/1200/1500"><img src="https://picsum.photos/seed/ex8/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:0" role="button" tabindex="0" aria-label="Open image 1 of 8" data-lightbox data-title="Exploration 01" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex1/1200/1500"><img src="https://picsum.photos/seed/ex1/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:1" role="button" tabindex="0" aria-label="Open image 2 of 8" data-lightbox data-title="Exploration 02" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex2/1200/1500"><img src="https://picsum.photos/seed/ex2/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:2" role="button" tabindex="0" aria-label="Open image 3 of 8" data-lightbox data-title="Exploration 03" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex3/1200/1500"><img src="https://picsum.photos/seed/ex3/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:3" role="button" tabindex="0" aria-label="Open image 4 of 8" data-lightbox data-title="Exploration 04" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex4/1200/1500"><img src="https://picsum.photos/seed/ex4/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:4" role="button" tabindex="0" aria-label="Open image 5 of 8" data-lightbox data-title="Exploration 05" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex5/1200/1500"><img src="https://picsum.photos/seed/ex5/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:5" role="button" tabindex="0" aria-label="Open image 6 of 8" data-lightbox data-title="Exploration 06" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex6/1200/1500"><img src="https://picsum.photos/seed/ex6/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:6" role="button" tabindex="0" aria-label="Open image 7 of 8" data-lightbox data-title="Exploration 07" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex7/1200/1500"><img src="https://picsum.photos/seed/ex7/400/500" alt=""></div>
+          <div class="hover-img reveal" style="--i:7" role="button" tabindex="0" aria-label="Open image 8 of 8" data-lightbox data-title="Exploration 08" data-caption="Placeholder caption — replace with a line about this piece." data-details="Camera: Add camera|Lens: Add lens|Location: Add location" data-full="https://picsum.photos/seed/ex8/1200/1500"><img src="https://picsum.photos/seed/ex8/400/500" alt=""></div>
         </div>
       </div>
       <div class="exploration-copy reveal" style="--i:1">
@@ -331,12 +338,23 @@
   <button class="modal-close lightbox-close" id="lightboxClose" aria-label="Close gallery">×</button>
   <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">←</button>
   <figure class="lightbox-stage">
-    <img id="lightboxImage" src="" alt="">
+    <div class="lightbox-media">
+      <img id="lightboxImage" src="" alt="">
+      <video id="lightboxVideo" controls playsinline preload="metadata" hidden></video>
+      <div id="lightboxModel" class="lightbox-model" data-status="" hidden>
+        <p class="lightbox-hint">Drag to rotate · Scroll to zoom</p>
+      </div>
+    </div>
+    <div class="lightbox-info" id="lightboxInfo" hidden>
+      <h3 id="lightboxTitle"></h3>
+      <p id="lightboxCaption"></p>
+      <ul id="lightboxDetails"></ul>
+    </div>
     <figcaption id="lightboxCount" class="lightbox-count" aria-live="polite"></figcaption>
   </figure>
   <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">→</button>
 </div>
 
-<script src="js/main.js?v=20261102"></script>
+<script src="js/main.js?v=20261102c"></script>
 </body>
 </html>

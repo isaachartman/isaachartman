@@ -49,6 +49,54 @@ assets/images/       drop real project/portrait photography here
 6. **Copy** — hero headline, featured/latest project data, about bio, FAQ answers,
    and skills list are all placeholder text to be replaced with the real thing.
 
+## Posting to the Explorations lightbox
+
+Every thumbnail in the Explorations grid (`.explore-gallery` in `index.html`) opens
+the lightbox viewer. Each one is a `<div ... data-lightbox>` wrapping a thumbnail
+`<img>`; its `data-*` attributes describe what opens.
+
+| Attribute | What it does |
+|---|---|
+| `data-type` | `image` (default), `video`, or `model` |
+| `data-full` | the file to show: a large image, a video, or a `.stl` / `.obj` model |
+| `data-title` | bold title in the details box |
+| `data-caption` | one line of description under the title |
+| `data-details` | up to a few lines separated by `\|`; `Label: value` gets a styled label |
+| `data-color` | models only: surface colour (default `#d9d8d4`) |
+| `data-up` | models only: `z` or `y`. STL defaults to Z-up (CAD), OBJ to Y-up |
+| `data-format` | models only: `stl` or `obj`, when the file has no extension |
+
+The title, caption and details are all optional; the box hides itself when empty.
+
+```html
+<!-- Photograph -->
+<div class="hover-img reveal" style="--i:0" role="button" tabindex="0" aria-label="Open image 1 of 8"
+     data-lightbox data-full="assets/explorations/lake-large.webp"
+     data-title="Lake at dawn" data-caption="First light over the water."
+     data-details="Camera: Nikon D7000|Lens: 35mm f/1.8|Date: Oct 2026">
+  <img src="assets/explorations/lake-thumb.webp" alt="">
+</div>
+
+<!-- Video: the thumbnail doubles as the poster; it gets a "VIDEO" badge -->
+<div ... data-lightbox data-type="video" data-full="assets/explorations/ride.mp4" data-title="...">
+  <img src="assets/explorations/ride-poster.webp" alt="">
+</div>
+
+<!-- 3D model: drag to rotate, scroll or pinch to zoom; it gets a "3D" badge -->
+<div ... data-lightbox data-type="model" data-full="assets/explorations/bracket.stl" data-title="...">
+  <img src="assets/explorations/bracket-render.webp" alt="">
+</div>
+```
+
+Tips: put files in `assets/explorations/` (the folder doesn't exist yet). Use MP4 (H.264)
+for video so it plays everywhere. For the thumbnail of a video or model, export a
+still or render. Also update the `aria-label` numbers ("Open image N of M") when you
+add or remove thumbnails.
+
+The 3D viewer uses three.js from the jsDelivr CDN (pinned to 0.160.0 in the
+`importmap` in `index.html`) and only downloads it the first time a model is opened.
+STL files should be reasonably light (a few MB) since they load on click.
+
 ## Notes on the interactive bits
 
 - **Smooth scroll**: custom `requestAnimationFrame` easing (easeInOutCubic) driving

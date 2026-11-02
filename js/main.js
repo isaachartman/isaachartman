@@ -384,35 +384,236 @@
 
   /* -----------------------------------------------------
      EXPLORATIONS LIGHTBOX
-     Each [data-lightbox] thumbnail opens a full-size viewer
-     (data-full, falling back to the thumbnail's own src).
-     Arrow buttons, ← / → keys and swipes step through the
-     set; Escape and a click on the backdrop close it (shared
-     modal handlers above).
+     Each [data-lightbox] thumbnail opens a full-size viewer. Its
+     data-type picks the media:
+       image (default)  data-full = image URL (falls back to the thumbnail)
+       video            data-full = video file (the thumbnail is its poster)
+       model            data-full = .stl or .obj file, shown as a rotatable
+                        3D view (three.js, loaded only when first opened)
+     Optional text for the details box under the media:
+       data-title, data-caption, and data-details — lines separated by |,
+       where "Label: value" gets a styled label.
+     Arrow buttons, ← / → keys and swipes step through the set; Escape
+     and a click on the backdrop close it (shared modal handlers above).
   ----------------------------------------------------- */
   var lightbox = document.getElementById('lightbox');
   var lbThumbs = Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
 
   if (lightbox && lbThumbs.length) {
     var lbImage = document.getElementById('lightboxImage');
+    var lbVideo = document.getElementById('lightboxVideo');
+    var lbModel = document.getElementById('lightboxModel');
     var lbCount = document.getElementById('lightboxCount');
+    var lbInfo = document.getElementById('lightboxInfo');
+    var lbTitle = document.getElementById('lightboxTitle');
+    var lbCaption = document.getElementById('lightboxCaption');
+    var lbDetails = document.getElementById('lightboxDetails');
     var lbIndex = 0;
+    var lbToken = 0;       // bumped on every show, so late async work can tell it is stale
+    var lbModelView = null; // the live three.js scene, kept so it can be torn down
 
+    var lbType = function (el) { return el.getAttribute('data-type') || 'image'; };
     var lbSrc = function (i) {
       var el = lbThumbs[i];
       return el.getAttribute('data-full') || el.querySelector('img').src;
     };
 
+    /* ---- 3D models (three.js is fetched the first time one is opened) ---- */
+    var lbThree = null;
+    var lbLoadThree = function () {
+      if (!lbThree) {
+        lbThree = Promise.all([
+          import('three'),
+          import('three/addons/controls/OrbitControls.js'),
+          import('three/addons/loaders/STLLoader.js'),
+          import('three/addons/loaders/OBJLoader.js')
+        ]).then(function (m) {
+          return { THREE: m[0], OrbitControls: m[1].OrbitControls, STLLoader: m[2].STLLoader, OBJLoader: m[3].OBJLoader };
+        });
+        lbThree.catch(function () { lbThree = null; }); // allow a retry after a network failure
+      }
+      return lbThree;
+    };
+
+    var lbStopModel = function () {
+      if (!lbModelView) return;
+      var v = lbModelView;
+      lbModelView = null;
+      cancelAnimationFrame(v.raf);
+      v.observer.disconnect();
+      v.controls.dispose();
+      v.scene.traverse(function (o) {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) [].concat(o.material).forEach(function (m) { m.dispose(); });
+      });
+      v.renderer.dispose();
+      v.renderer.domElement.remove();
+    };
+
+    var lbStartModel = function (el, token) {
+      var url = el.getAttribute('data-full');
+      var format = (el.getAttribute('data-format') || url.split('?')[0].split('.').pop()).toLowerCase();
+      lbModel.setAttribute('data-status', 'loading');
+
+      var fail = function () {
+        if (token === lbToken) lbModel.setAttribute('data-status', 'error');
+      };
+
+      lbLoadThree().then(function (lib) {
+        var THREE = lib.THREE;
+        var Loader = format === 'obj' ? lib.OBJLoader : lib.STLLoader;
+        new Loader().load(url, function (data) {
+          if (token !== lbToken) return; // the viewer moved on while this was loading
+          try {
+            var material = new THREE.MeshStandardMaterial({
+              color: el.getAttribute('data-color') || '#d9d8d4',
+              roughness: 0.55,
+              metalness: 0.1,
+              side: THREE.DoubleSide // open or inverted meshes still read as solid
+            });
+            var object;
+            if (format === 'obj') {
+              object = data;
+              object.traverse(function (o) {
+                if (!o.isMesh) return;
+                o.material = material;
+                if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();
+              });
+            } else {
+              if (!data.attributes.normal) data.computeVertexNormals();
+              object = new THREE.Mesh(data, material);
+            }
+
+            // STL files are usually Z-up (CAD); OBJ files usually Y-up. data-up overrides.
+            var zUp = (el.getAttribute('data-up') || (format === 'stl' ? 'z' : 'y')) === 'z';
+            var group = new THREE.Group();
+            group.add(object);
+            if (zUp) group.rotation.x = -Math.PI / 2;
+            group.updateMatrixWorld(true);
+
+            // Centre the model on the origin and frame it.
+            var box = new THREE.Box3().setFromObject(group);
+            var size = box.getSize(new THREE.Vector3());
+            group.position.sub(box.getCenter(new THREE.Vector3()));
+            var radius = Math.max(size.x, size.y, size.z) || 1;
+
+            var scene = new THREE.Scene();
+            scene.add(group);
+            scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3a38, 1.4));
+            var key = new THREE.DirectionalLight(0xffffff, 2.4);
+            key.position.set(radius, radius * 1.5, radius);
+            scene.add(key);
+            var fill = new THREE.DirectionalLight(0xffffff, 0.9);
+            fill.position.set(-radius, radius * 0.4, -radius);
+            scene.add(fill);
+
+            var camera = new THREE.PerspectiveCamera(38, 1, radius / 100, radius * 100);
+            var dist = (radius / 2) / Math.tan(THREE.MathUtils.degToRad(19)) * 1.4;
+            camera.position.set(dist * 0.6, dist * 0.45, dist);
+
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            lbModel.appendChild(renderer.domElement);
+
+            var controls = new lib.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = !reduceMotion;
+            controls.autoRotateSpeed = 1.4;
+            controls.addEventListener('start', function () { controls.autoRotate = false; });
+
+            var resize = function () {
+              var w = lbModel.clientWidth, h = lbModel.clientHeight;
+              if (!w || !h) return;
+              renderer.setSize(w, h);
+              camera.aspect = w / h;
+              camera.updateProjectionMatrix();
+            };
+            var observer = new ResizeObserver(resize);
+            observer.observe(lbModel);
+            resize();
+
+            var view = { scene: scene, renderer: renderer, controls: controls, observer: observer, raf: 0 };
+            var tick = function () {
+              view.raf = requestAnimationFrame(tick);
+              controls.update();
+              renderer.render(scene, camera);
+            };
+            lbModelView = view;
+            tick();
+            lbModel.setAttribute('data-status', '');
+          } catch (err) {
+            fail();
+          }
+        }, undefined, fail);
+      }).catch(fail);
+    };
+
+    /* ---- Showing an item ---- */
+    var lbFillInfo = function (el) {
+      var title = el.getAttribute('data-title') || '';
+      var caption = el.getAttribute('data-caption') || '';
+      var lines = (el.getAttribute('data-details') || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean);
+
+      lbTitle.textContent = title;
+      lbTitle.hidden = !title;
+      lbCaption.textContent = caption;
+      lbCaption.hidden = !caption;
+      lbDetails.innerHTML = '';
+      lines.forEach(function (line) {
+        var li = document.createElement('li');
+        var colon = line.indexOf(':');
+        if (colon > 0 && colon < 24) {
+          var label = document.createElement('span');
+          label.className = 'lightbox-label';
+          label.textContent = line.slice(0, colon);
+          li.appendChild(label);
+          li.appendChild(document.createTextNode(line.slice(colon + 1).trim()));
+        } else {
+          li.textContent = line;
+        }
+        lbDetails.appendChild(li);
+      });
+      lbDetails.hidden = !lines.length;
+      lbInfo.hidden = !(title || caption || lines.length);
+    };
+
+    var lbStopMedia = function () {
+      lbToken++;
+      lbStopModel();
+      lbVideo.pause();
+      if (lbVideo.getAttribute('src')) { lbVideo.removeAttribute('src'); lbVideo.load(); } // stop buffering
+    };
+
     var lbShow = function (i) {
       lbIndex = (i + lbThumbs.length) % lbThumbs.length;
-      lbImage.classList.add('is-loading');
-      lbImage.src = lbSrc(lbIndex);
-      lbImage.alt = lbThumbs[lbIndex].querySelector('img').alt || ('Exploration ' + (lbIndex + 1));
+      var el = lbThumbs[lbIndex];
+      var type = lbType(el);
+      lbStopMedia();
+      var token = lbToken;
+
+      lbImage.hidden = type !== 'image';
+      lbVideo.hidden = type !== 'video';
+      lbModel.hidden = type !== 'model';
+      lbModel.setAttribute('data-status', '');
+
+      if (type === 'video') {
+        lbVideo.poster = el.querySelector('img').src;
+        lbVideo.src = lbSrc(lbIndex);
+      } else if (type === 'model') {
+        lbStartModel(el, token);
+      } else {
+        lbImage.classList.add('is-loading');
+        lbImage.src = lbSrc(lbIndex);
+        lbImage.alt = el.getAttribute('data-title') || el.querySelector('img').alt || ('Exploration ' + (lbIndex + 1));
+        // Warm the neighbouring images so stepping through feels instant.
+        [lbIndex - 1, lbIndex + 1].forEach(function (n) {
+          var j = (n + lbThumbs.length) % lbThumbs.length;
+          if (lbType(lbThumbs[j]) === 'image') new Image().src = lbSrc(j);
+        });
+      }
+
+      lbFillInfo(el);
       lbCount.textContent = (lbIndex + 1) + ' / ' + lbThumbs.length;
-      // Warm the neighbours so stepping through feels instant.
-      [lbIndex - 1, lbIndex + 1].forEach(function (n) {
-        new Image().src = lbSrc((n + lbThumbs.length) % lbThumbs.length);
-      });
     };
 
     lbImage.addEventListener('load', function () { lbImage.classList.remove('is-loading'); });
@@ -428,19 +629,27 @@
       });
     });
 
+    // Closing by any route (button, Escape, backdrop) stops video and frees the 3D scene.
+    new MutationObserver(function () {
+      if (!lightbox.classList.contains('is-open')) lbStopMedia();
+    }).observe(lightbox, { attributes: true, attributeFilter: ['class'] });
+
     document.getElementById('lightboxClose').addEventListener('click', function () { closeModal(lightbox); });
     document.getElementById('lightboxPrev').addEventListener('click', function () { lbShow(lbIndex - 1); });
     document.getElementById('lightboxNext').addEventListener('click', function () { lbShow(lbIndex + 1); });
 
     document.addEventListener('keydown', function (e) {
       if (!lightbox.classList.contains('is-open')) return;
+      if (e.target === lbVideo) return; // arrows seek inside a focused video
       if (e.key === 'ArrowLeft') lbShow(lbIndex - 1);
       if (e.key === 'ArrowRight') lbShow(lbIndex + 1);
     });
 
-    // Swipe left / right on touch screens.
+    // Swipe left / right on touch screens (not when the touch starts on a video or 3D view).
     var lbTouchX = null;
-    lightbox.addEventListener('touchstart', function (e) { lbTouchX = e.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchstart', function (e) {
+      lbTouchX = e.target.closest('.lightbox-model, video') ? null : e.changedTouches[0].clientX;
+    }, { passive: true });
     lightbox.addEventListener('touchend', function (e) {
       if (lbTouchX === null) return;
       var dx = e.changedTouches[0].clientX - lbTouchX;
