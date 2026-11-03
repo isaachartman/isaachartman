@@ -694,8 +694,10 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
    The negative bottom margin offsets its height (36px + 18px) so it overlays the content without shifting it. */
 .modal-project .modal-close { position: sticky; top: 18px; right: auto; z-index: 5; margin: 18px 18px -54px auto; }
 .modal-project .modal-close:not(:hover) { background: var(--paper); }
-.modal-project-grid { display: grid; grid-template-columns: 1.2fr 1fr; }
-.modal-project-media { aspect-ratio: 4/3; overflow: hidden; }
+.modal-project-grid { display: grid; grid-template-columns: 1.2fr 1fr; position: relative; }
+/* 1px #E1E1E1 divider between the images and the text, running the full height of the grid whichever column is taller. */
+.modal-project-grid::after { content: ''; position: absolute; top: 0; bottom: 0; left: calc(100% * 1.2 / 2.2); width: 1px; background: #E1E1E1; pointer-events: none; z-index: 1; }
+.modal-project-media { aspect-ratio: 4/3; overflow: hidden; padding-right: 20px; }
 .modal-project-media img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 /* Gallery: every image stacked at its natural ratio; the info column stays pinned while they scroll. */
 .modal-project-media.has-gallery { aspect-ratio: auto; display: flex; flex-direction: column; gap: 2px; }
@@ -829,6 +831,8 @@ hr, .rule { border: none; border-top: 1px solid var(--line); }
   .faq-layout { grid-template-columns: 1fr; }
   .cv-skills-grid { grid-template-columns: repeat(2, 1fr); }
   .modal-project-grid { grid-template-columns: 1fr; }
+  .modal-project-grid::after { display: none; }
+  .modal-project-media { padding-right: 0; border-bottom: 1px solid #E1E1E1; }
   .projects-header-grid { grid-template-columns: 1fr; }
   .project-entry-head { flex-direction: column; align-items: flex-start; gap: 8px; }
   .project-entry-head .project-meta { flex-direction: row; align-items: baseline; gap: 8px; text-align: left; }
